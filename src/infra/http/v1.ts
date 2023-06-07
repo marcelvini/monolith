@@ -7,7 +7,7 @@ import { userRoutes } from '../../modules/user/http/userRoutes'
 const router = Router()
 
 router
-    .use('/users', userRoutes)
+    .use('/user', userRoutes)
 
 
 const version = '/v1'

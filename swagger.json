@@ -1,0 +1,271 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Monolith portfolio",
+        "description": "Its an example of monolith archtecture app build on the right way and good pactices",
+        "contact": {
+            "name": "Support",
+            "email": "marcel@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/v1/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "description": "list all users endpoint",
+                "responses": {
+                    "200": {
+                        "description": "returns a list of users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/createUserResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "description": "create new user endpoint",
+                "requestBody": {
+                    "description": "example of requisition body input json",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/createUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "user created sucessfuly",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/createUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "bad request, some request body information or param is not following the endpoint pattern"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        },
+        "/v1/user/{id}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "description": "user id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "uuid"
+                    }
+                ],
+                "description": "list all users endpoint",
+                "responses": {
+                    "200": {
+                        "description": "returns a list of users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/createUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found, wrong id param or user does not exists"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "description": "user id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "uuid"
+                    }
+                ],
+                "description": "update user endpoint",
+                "responses": {
+                    "200": {
+                        "description": "returns updated user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/updateUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "bad request, some request body information or param is not following the endpoint pattern"
+                    },
+                    "404": {
+                        "description": "not found, wrong id param or user does not exists"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                },
+                "requestBody": {
+                    "description": "example of requisition body input json",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/updateUserRequest"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "description": "user id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "uuid"
+                    }
+                ],
+                "description": "remove user endpoint",
+                "responses": {
+                    "204": {
+                        "description": "deleted"
+                    },
+                    "404": {
+                        "description": "not found, wrong id param or user does not exists"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "createUserRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "new user name",
+                        "example": "Marcel Aragão"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "new user email",
+                        "example": "marcelviniccius@gmail.com"
+                    }
+                }
+            },
+            "createUserResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "new user unique id",
+                        "example": "03290ece-7cf1-4edf-ab16-c9b558108a93"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "new user name",
+                        "example": "Marcel Aragão"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "new user email",
+                        "example": "marcelviniccius@gmail.com"
+                    },
+                    "createdAt": {
+                        "type": "date",
+                        "description": "new user creation date",
+                        "example": "2023-06-06T19:23:41.966Z"
+                    }
+                }
+            },
+            "updateUserRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "updated user name",
+                        "example": "Marcel Aragão 2"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "updated user email",
+                        "example": "marcelviniccius2@gmail.com"
+                    }
+                }
+            },
+            "updateUserResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "updated user unique id",
+                        "example": "03290ece-7cf1-4edf-ab16-c9b558108a93"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "updated user name",
+                        "example": "Marcel Aragão 2"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "updated user email",
+                        "example": "marcelviniccius2@gmail.com"
+                    },
+                    "createdAt": {
+                        "type": "date",
+                        "description": "updated user creation date",
+                        "example": "2023-06-06T19:23:41.966Z"
+                    }
+                }
+            }
+        }
+    }
+}

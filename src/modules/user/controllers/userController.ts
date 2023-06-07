@@ -7,6 +7,7 @@ import { updateUserUsecase } from "../useCases/updateUserUseCase";
 import { createUserDtoValidator } from "../validators/createUserDtoValidator";
 import { badRequestError } from "../../../shared/errorHandling/errorTypes";
 import { error } from "console";
+import { updateUserDtoValidator } from "../validators/updateUserDtoValidator";
 
 class userController {
 
@@ -24,7 +25,8 @@ class userController {
     }
     async update(req: Request, res: Response) {
         const id = req.params.id
-        res.send(await this.updateUserUseCase.execute({ ...req.body, id }))
+        const updateUserData = updateUserDtoValidator(req.body)
+        res.send(await this.updateUserUseCase.execute({ ...updateUserData, id }))
     }
     async findOne(req: Request, res: Response) {
         const id = req.params.id
@@ -35,7 +37,8 @@ class userController {
     }
     async delete(req: Request, res: Response) {
         const id = req.params.id
-        res.send(await this.deleteUserUseCase.execute(id))
+        await this.deleteUserUseCase.execute(id)
+        res.status(204).send()
     }
 
 

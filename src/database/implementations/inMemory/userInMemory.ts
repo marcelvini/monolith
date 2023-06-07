@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto"
 import { User } from "../../entities/user"
 import { IUserRepositoryImplementation } from "../../repositories/userRepository"
+import { notFoundError } from "../../../shared/errorHandling/errorTypes"
 
 
 let users: User[] = []
@@ -8,8 +9,9 @@ let users: User[] = []
 class userInMemoryMethods implements IUserRepositoryImplementation {
     create(user: User) {
         const { name, email } = user
-        users.push({ id: randomUUID(), email, name, createdAt: new Date() } as User)
-        return user
+        const createdUser = { id: randomUUID(), email, name, createdAt: new Date() } as User
+        users.push(createdUser)
+        return createdUser
     }
     update(id: string, user: Partial<User>) {
         let updatedUser = {} as User
@@ -23,11 +25,14 @@ class userInMemoryMethods implements IUserRepositoryImplementation {
         return updatedUser
     }
     findOne(id: string) {
-        let foundUser = {}
+        let foundUser
         for (const user of users) {
             if (user.id === id) {
                 foundUser = user
             }
+        }
+        if (!foundUser) {
+            throw new notFoundError("user not found")
         }
         return foundUser as User
     }
@@ -41,7 +46,6 @@ class userInMemoryMethods implements IUserRepositoryImplementation {
             }
             return usr
         })
-        return true
     }
 
 
