@@ -1,0 +1,33 @@
+version: '3'
+services:
+    database:
+      image: postgres
+      container_name: database
+      hostname: database
+      ports:
+        - "5432:5432"
+      restart: always
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: monolithDB
+      volumes:
+        - pgdata:/data/postgres
+     
+    monolith:
+      stdin_open: true
+      build: 
+        context: .
+        dockerfile: Dockerfile
+      container_name: monolith
+      ports:
+        - "3000:3000"
+      volumes:
+        - .:/usr/app
+      depends_on:
+        - database
+  
+volumes:
+  pgdata:
+    driver: local
+
